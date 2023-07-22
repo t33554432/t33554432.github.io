@@ -177,6 +177,7 @@ function gamePressed() {
     if(checkRect(31 * inc, 61 * inc, 7 * inc, 8 * inc)) {
         if(players == 1) {
             botStart = (botStart + 1) % 2;
+            score = [0, 0];
             resetBoard();
         }
         if(players == 2) {
