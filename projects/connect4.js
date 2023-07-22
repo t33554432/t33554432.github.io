@@ -1,6 +1,6 @@
 let state;
 
-let boardImg, board, falling, turn, players, score, winningLine, tripleWeighting, alteranteTurns, lastStarted;
+let boardImg, board, falling, turn, players, score, winningLine, tripleWeighting, alternateTurns, lastStarted;
 
 let gravity, depth, botStarts, gameEnded;
 
@@ -28,10 +28,19 @@ function setup() {
     gameEnded = false;
     winningLine = [0,0];
     tripleWeighting = 0.01;
-    alteranteTurns = true;
+    alternateTurns = true;
     lastStarted = 1;
 
 }
+
+function windowResized() {
+  // Resize the canvas to fit the div
+  var holderWidth = document.getElementById('sketch-holder').offsetWidth;
+  resizeCanvas(holderWidth * 0.95, holderWidth * 0.95);
+}
+
+// Call windowResized() whenever the window is resized
+window.addEventListener('resize', windowResized);
 
 function draw() {
     
@@ -67,13 +76,13 @@ function drawMenu() {
     drawMenuBackground();
 
     //Draw buttons
-    strokeWeight(5);
+    strokeWeight(5 * width / 800);
     stroke(0);
     fill(255,255,255,150);
     rect(width / 5, width / 5, 3 * width / 5, width / 5, 10);
     rect(width / 5, 3 * width / 5, 3 * width / 5, width / 5, 10);
     textAlign(CENTER, CENTER);
-    textSize(32);
+    textSize(32 * width / 800);
     fill(0);
     noStroke();
     text('1 Player', width / 2, 3 * width / 10);
@@ -110,21 +119,21 @@ function drawGame() {
     drawConnect4Board();
 
     //Draw back button
-    strokeWeight(5);
+    strokeWeight(5 * width / 800);
     stroke(0);
     fill(255,255,255,150);
     rect(width / 56, 49 * width / 56, 10 * width / 56, 6 * width / 56, 10);
-    textSize(32);
+    textSize(32 * width / 800);
     fill(0);
     noStroke();
     text('Back', 6 * width / 56, 52 * width / 56);
 
     //Draw the turn display
-    strokeWeight(5);
+    strokeWeight(5 * width / 800);
     stroke(0);
     fill(255,255,255,150);
     rect(12 * width / 56, 49 * width / 56, 6 * width / 56, 6 * width / 56, 10);
-    textSize(20);
+    textSize(20 * width / 800);
     fill(0);
     noStroke();
     text('Turn', 15 * width / 56, 51 * width / 56);
@@ -137,52 +146,52 @@ function drawGame() {
 
     //Draw the depth display
     if(players == 1) {
-        strokeWeight(5);
+        strokeWeight(5 * width / 800);
         stroke(0);
         fill(255,255,255,150);
         rect(19 * width / 56, 49 * width / 56, 12 * width / 56, 6 * width / 56, 10);
-        textSize(20);
+        textSize(20 * width / 800);
         fill(0);
         noStroke();
         text('Depth', 22 * width / 56, 51 * width / 56);
         text(depth, 22 * width / 56, 53 * width / 56);
-        textSize(32);
+        textSize(32 * width / 800);
         text('-', 27 * width / 56, 52 * width / 56);
         text('+', 29 * width / 56, 52 * width / 56);
     }
 
     //Draw the alternate turns display
     if(players == 2) {
-        strokeWeight(5);
+        strokeWeight(5 * width / 800);
         stroke(0);
         fill(255,255,255,150);
         rect(19 * width / 56, 49 * width / 56, 11 * width / 56, 6 * width / 56, 10);
-        textSize(20);
+        textSize(20 * width / 800);
         fill(0);
         noStroke();
         text('Alternate', 22.5 * width / 56, 51 * width / 56);
-        text((alteranteTurns) ? 'on' : 'off', 22 * width / 56, 53 * width / 56);
-        textSize(18);
+        text((alternateTurns) ? 'on' : 'off', 22 * width / 56, 53 * width / 56);
+        textSize(18 * width / 800);
         text('Swap', 28 * width / 56, 52 * width / 56);
     }
 
     //Draw the player display
     if(players == 1) {
-        strokeWeight(5);
+        strokeWeight(5 * width / 800);
         stroke(0);
         fill(255,255,255,150);
         rect(32 * width / 56, 49 * width / 56, 11 * width / 56, 6 * width / 56, 10);
-        textSize(20);
+        textSize(20 * width / 800);
         fill(0);
         noStroke();
         text('Bot goes', 35 * width / 56, 51 * width / 56);
         text((botStarts) ? 'first' : 'second', 35 * width / 56, 53 * width / 56);
-        textSize(18);
+        textSize(18 * width / 800);
         text('Swap', 41 * width / 56, 52 * width / 56);
     }
 
     //Show the score displays
-    strokeWeight(5);
+    strokeWeight(5 * width / 800);
     stroke(0);
     fill(255,255,255,150);
     rect(44 * width / 56, 49 * width / 56, 5 * width / 56, 6 * width / 56, 10);
@@ -192,7 +201,7 @@ function drawGame() {
     ellipse(46.5 * width / 56, 51 * width / 56, 1.5 * width / 56);
     fill(255,0,0);
     ellipse(52.5 * width / 56, 51 * width / 56, 1.5 * width / 56);
-    textSize(20);
+    textSize(20 * width / 800);
     fill(0);
     text(score[0], 46.5 * width / 56, 53 * width / 56);
     text(score[1], 52.5 * width / 56, 53 * width / 56);
@@ -229,7 +238,7 @@ function gamePressed() {
     if(players == 2) {
 
         if(checkRect(25 * width / 56, 49 * width / 56, 5 * width / 56, 6 * width / 56)) {
-            alteranteTurns = !alteranteTurns;
+            alternateTurns = !alternateTurns;
         }
 
     }
@@ -308,7 +317,7 @@ function drawConnect4Board() {
     if(gameEnded && winningLine != [0,0]) {
         noFill();
         stroke(0,255,0);
-        strokeWeight(10);
+        strokeWeight(10 * width / 800);
         line(winningLine[0].x, winningLine[0].y, winningLine[1].x, winningLine[1].y);
     }
 }
@@ -406,7 +415,7 @@ function checkForFull(state) {
 function resetBoard() {
     board = '------------------------------------------';
     turn = 0;
-    if(players == 2 && alteranteTurns && state == 'game') {
+    if(players == 2 && alternateTurns && state == 'game') {
         turn = (lastStarted + 1) % 2;
         lastStarted = turn;
     }
