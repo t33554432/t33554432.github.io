@@ -20,7 +20,7 @@ function setup() {
     //Set starting conditions
     state = 'menu';
     resetBoard();
-    gravity = 15;
+    gravity = 15 * width / 800;
     players = 1;
     depth = 5;
     botStarts = false;
@@ -37,6 +37,7 @@ function windowResized() {
   // Resize the canvas to fit the div
   var holderWidth = document.getElementById('sketch-holder').offsetWidth;
   resizeCanvas(holderWidth * 0.95, holderWidth * 0.95);
+  gravity = 15 * width / 800;
 }
 
 // Call windowResized() whenever the window is resized
@@ -312,7 +313,7 @@ function drawConnect4Board() {
         }
     }
 
-    image(boardImg, 0, 0);
+    image(boardImg, 0, 0, width, height);
 
     if(gameEnded && winningLine != [0,0]) {
         noFill();
