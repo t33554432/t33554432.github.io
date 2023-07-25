@@ -16,6 +16,7 @@ function setup() {
     //Create the canvas
     var canvas = createCanvas(800, 800);
     canvas.parent('sketch-holder');
+    windowResized();
 
     //Set starting conditions
     state = 'menu';
