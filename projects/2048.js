@@ -189,19 +189,19 @@ function gamePressed() {
     }
 
     if(anim[0] <= 0) {
-        if(checkEllipse(40 * inc, 67 * inc, 6 * inc)) {
+        if(checkEllipse(40 * inc, 67 * inc, 3 * inc)) {
             currentDirection = [createVector(0, -1), -4];
             moveBoard();
         }
-        if(checkEllipse(40 * inc, 77 * inc, 6 * inc)) {
+        if(checkEllipse(40 * inc, 77 * inc, 3 * inc)) {
             currentDirection = [createVector(0, 1), 4];
             moveBoard();
         }
-        if(checkEllipse(35 * inc, 72 * inc, 6 * inc)) {
+        if(checkEllipse(35 * inc, 72 * inc, 3 * inc)) {
             currentDirection = [createVector(-1, 0), -1];
             moveBoard();
         }
-        if(checkEllipse(45 * inc, 72 * inc, 6 * inc)) {
+        if(checkEllipse(45 * inc, 72 * inc, 3 * inc)) {
             currentDirection = [createVector(1, 0), 1];
             moveBoard();
         }
