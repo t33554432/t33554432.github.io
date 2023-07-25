@@ -281,6 +281,23 @@ function drawConnect4Board() {
     noStroke();
     let r = width / 9;
 
+    //Draw ghost piece
+    if(state == 'game') {
+      if(checkRect(0, 0, width, 6 * width / 7)) {
+        noStroke();
+        fill(200);
+        let x = floor(mouseX / (width / 7));
+        if(getAvailableCols().includes(x)) {
+          for(let y = 5; y > -1; y--) {
+            if(currentBoard[7 * y + x] == '-') {
+              ellipse((x + 0.5) * (width / 7), (y + 0.5) * (width / 7), (width / 7.5));
+              y = -1;
+            }
+          }
+        }
+      }
+    }
+
     for(let i=0;i<42;i++) {
         if(currentBoard[i] != '-') {
             let x = getXCoord(i);
