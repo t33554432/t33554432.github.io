@@ -192,18 +192,22 @@ function gamePressed() {
         if(checkEllipse(40 * inc, 67 * inc, 3 * inc)) {
             currentDirection = [createVector(0, -1), -4];
             moveBoard();
+            return;
         }
         if(checkEllipse(40 * inc, 77 * inc, 3 * inc)) {
             currentDirection = [createVector(0, 1), 4];
             moveBoard();
+            return;
         }
         if(checkEllipse(35 * inc, 72 * inc, 3 * inc)) {
             currentDirection = [createVector(-1, 0), -1];
             moveBoard();
+            return;
         }
         if(checkEllipse(45 * inc, 72 * inc, 3 * inc)) {
             currentDirection = [createVector(1, 0), 1];
             moveBoard();
+            return;
         }
     }
 
