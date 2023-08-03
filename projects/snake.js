@@ -46,6 +46,17 @@ function windowResized() {
 // Call windowResized() whenever the window is resized
 window.addEventListener('resize', windowResized);
 
+function preventScrolling(event) {
+    const keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+  
+    if (keys[event.keyCode]) {
+      event.preventDefault();
+      return false;
+    }
+  }
+  
+  window.addEventListener('keydown', preventScrolling, false);
+
 //Runs once every frame
 function draw() {
   
