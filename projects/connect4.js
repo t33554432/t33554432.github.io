@@ -281,6 +281,30 @@ function drawConnect4Board() {
     noStroke();
     let r = width / 9;
 
+    if(falling[0] == 'doMove') {
+      falling = [0,0,0];
+      startNextMove();
+    }
+
+    if(falling[0] > 0) {
+      falling[0] -= gravity;
+      falling[2] += gravity;
+      if(turn == 0) {
+        fill(255,255,0);
+      } else {
+        fill(255,0,0);
+      }
+      ellipse(falling[1], falling[2], r);
+      if(falling[0] <= 0) {
+        let x = round((falling[1] / (width / 7)) - 0.5);
+        let y = round((falling[2] / (width / 7)) - 0.5);
+        currentBoard[getIndex(x,y)] = turn;
+        turn = (turn + 1) % 2;
+        board = currentBoard.join('');
+        falling = ['doMove'];
+      }
+    }
+
     //Draw ghost piece
     if(state == 'game') {
       if(checkRect(0, 0, width, 6 * width / 7)) {
@@ -308,26 +332,6 @@ function drawConnect4Board() {
                 fill(255,0,0);
             }
             ellipse(x,y,r)
-        }
-    }
-
-    if(falling[0] > 0) {
-        falling[0] -= gravity;
-        falling[2] += gravity;
-        if(turn == 0) {
-            fill(255,255,0);
-        } else {
-            fill(255,0,0);
-        }
-        ellipse(falling[1], falling[2], r);
-        if(falling[0] <= 0) {
-            let x = round((falling[1] / (width / 7)) - 0.5);
-            let y = round((falling[2] / (width / 7)) - 0.5);
-            currentBoard[getIndex(x,y)] = turn;
-            turn = (turn + 1) % 2;
-            board = currentBoard.join('');
-            falling = [0,0,0];
-            startNextMove();
         }
     }
 
