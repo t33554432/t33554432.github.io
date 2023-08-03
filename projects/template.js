@@ -15,7 +15,6 @@ function windowResized() {
     // Resize the canvas to fit the div
     var holderWidth = document.getElementById('sketch-holder').offsetWidth;
     resizeCanvas(holderWidth * 0.95, holderWidth * 0.95 * 5.2 / 4);
-    gravity = 15 * width / 800;
 }
   
 // Call windowResized() whenever the window is resized
