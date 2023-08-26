@@ -1,5 +1,5 @@
 let sortType, anim, arr, arrSize, drawDelay, drawFreq, comparisons, timeTaken, finishedSorting, avgs;
-let sortTypes, arrSizes, drawDelays, drawFreqs, randomise;
+let sortTypes, arrSizes, drawDelays, drawFreqs, randomise, currentArrSize;
 
 function setup() {
 
@@ -14,7 +14,7 @@ function setup() {
     drawFreq = 1;
     randomise = true;
 
-    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort', "Bucket sort", "Counting sort", "Selection sort"];
+    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort', "Bucket sort", "Counting sort", "Selection sort", "Radix sort"];
     arrSizes = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
     drawDelays = [1, 2, 10, 50, 100, 500, 1000, 2000, 10000];
     drawFreqs = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 10000, 100000];
@@ -25,7 +25,8 @@ function setup() {
         [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //shaker avgs
         [10,  30,  130,  400,  1400,   7000,  25000,  100000,   620000,  2400000,  10000000], //bucket avgs
         [20,  40,  100,  200,   400,   1000,   2000,    4000,    10000,    20000,     40000], //counting avgs
-        [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000]  //selection avgs
+        [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //selection avgs
+        [20,  80,  200,  400,  1200,   3000,   6000,   16000,    40000,    80000,    200000]  //radix avgs
     ];
 
     finishedSorting = true;
@@ -37,6 +38,7 @@ function startSort() {
     comparisons = 0;
     timeTaken = 0;
     finishedSorting = false;
+    currentArrSize = arrSize;
     randomiseArray();
     drawArray(arr.join(' '), 0, []);
 
@@ -58,6 +60,9 @@ function startSort() {
             break;
         case 'Selection sort':
             selectionSort();
+            break;
+        case 'Radix sort':
+            radixSort();
             break;
     }
 
@@ -85,7 +90,7 @@ function drawArray(currentArr, currentComp, highlights) {
     currentArr = currentArr.split(' ');
 
     noStroke();
-    let cellWidth = width / currentArr.length;
+    let cellWidth = width / currentArrSize;
     for(let x = 0; x < currentArr.length; x++) {
         if(highlights.includes(x)) {
             fill(255,0,0);
@@ -509,6 +514,74 @@ function selectionSort() {
     }, drawDelay * (draws / drawFreq));
 
     print(`Selection ${arr.length} in ${draws} draws`);
+
+}
+
+function radixSort() {
+
+    let startTime = round(millis());
+    let extraTime = 0;
+    let draws = 0;
+
+    for(let i=0;i<floor(Math.log10(arr.length - 1))+1;i++) {
+        let current = 10 ** i;
+
+        //Create list of this place
+        let cArr = [];
+        arr.forEach((e,j) => {
+            cArr.push(floor(e / current) % (10));
+            comparisons++;
+
+            let extraTimeStart = millis();
+            if(draws % drawFreq == 0) {
+                let currentArr = arr.join(' ');
+                let currentComp = comparisons;
+                setTimeout(function() {
+                    drawArray(currentArr, currentComp, [j]); 
+                }, drawDelay * (draws / drawFreq));
+            }
+            extraTime += millis() - extraTimeStart;
+            draws++;
+        });
+
+        //Sort this new array using counting sort
+        let counts = [];
+        for(let j=0;j<10;j++){
+            counts[j] = [];
+        }
+        cArr.forEach((e,j) => {
+            counts[e].push(arr[j]);
+            comparisons++;
+
+            let extraTimeStart = millis();
+            if(draws % drawFreq == 0) {
+                let currentArr = counts.map(e => (e.length) ? e.join(' ') : e).join(' ');
+                let currentComp = comparisons;
+                setTimeout(function() {
+                    drawArray(currentArr, currentComp, [j]); 
+                }, drawDelay * (draws / drawFreq));
+            }
+            extraTime += millis() - extraTimeStart;
+            draws++;
+        });
+        
+        //Collapse this array
+        arr = [];
+        for(let j=0;j<10;j++){
+            for(let k=0;k<counts[j].length;k++) {
+                arr.push(counts[j][k]);
+            }
+        }
+
+    }
+
+    timeTaken = round(millis() - startTime - extraTime);
+
+    setTimeout(function() {
+        finishedSorting = true;
+    }, drawDelay * (draws / drawFreq));
+
+    print(`Radix ${arr.length} in ${draws} draws`);
 
 }
 
