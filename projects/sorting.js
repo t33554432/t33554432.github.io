@@ -1,5 +1,5 @@
 let sortType, anim, arr, arrSize, drawDelay, drawFreq, comparisons, timeTaken, finishedSorting, avgs;
-let sortTypes, arrSizes, drawDelays, drawFreqs;
+let sortTypes, arrSizes, drawDelays, drawFreqs, randomise;
 
 function setup() {
 
@@ -12,8 +12,9 @@ function setup() {
     arrSize = 100;
     drawDelay = 1;
     drawFreq = 1;
+    randomise = true;
 
-    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort', "Bucket sort"];
+    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort', "Bucket sort", "Counting sort", "Selection sort"];
     arrSizes = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
     drawDelays = [1, 2, 10, 50, 100, 500, 1000, 2000, 10000];
     drawFreqs = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 10000, 100000];
@@ -22,7 +23,9 @@ function setup() {
         [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //bubble avgs
         [25, 90,  600,  2500, 8000,  60000,  230000, 950000,  5900000,  2400000,  100000000], //insertion avgs
         [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //shaker avgs
-        [10,  30,  130,  400,  1400,   7000,  25000,  100000,   620000,  2400000,  10000000] //bucket avgs
+        [10,  30,  130,  400,  1400,   7000,  25000,  100000,   620000,  2400000,  10000000], //bucket avgs
+        [20,  40,  100,  200,   400,   1000,   2000,    4000,    10000,    20000,     40000], //counting avgs
+        [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000]  //selection avgs
     ];
 
     finishedSorting = true;
@@ -49,6 +52,12 @@ function startSort() {
             break;
         case 'Bucket sort':
             bucketSort();
+            break;
+        case 'Counting sort':
+            countingSort();
+            break;
+        case 'Selection sort':
+            selectionSort();
             break;
     }
 
@@ -149,8 +158,15 @@ function mousePressed() {
 
 function randomiseArray() {
 
-    arr = Array.from(Array(arrSize).keys());
-    arr = arr.sort(() => (Math.random() > .5) ? 1 : -1);
+    if(!randomise) {
+        arr = Array.from(Array(arrSize).keys());
+        arr = arr.sort(() => (Math.random() > .5) ? 1 : -1);
+    } else {
+        arr = [];
+        for(let i = 0; i < arrSize; i++) {
+            arr.push(floor(random() * arrSize));
+        }
+    }
 
 }
 
@@ -389,6 +405,110 @@ function bucketSort() {
     }, drawDelay * (draws / drawFreq));
 
     print(`Bucket ${arr.length} in ${draws} draws`);
+
+}
+
+function countingSort() {
+
+    let startTime = round(millis());
+    let extraTime = 0;
+    let draws = 0;
+
+    //Set up initial array
+    let counts = [];
+    for(let i=0;i<arr.length;i++) {
+        counts[i] = 0;
+    }
+
+    //Get counts
+    arr.forEach((e,i) => {
+        counts[e]++;
+        comparisons++;
+        let extraTimeStart = millis();
+        if(draws % drawFreq == 0) {
+            let currentArr = arr.join(' ');
+            let currentComp = comparisons;
+            setTimeout(function() {
+                drawArray(currentArr, currentComp, [i]); 
+            }, drawDelay * (draws / drawFreq));
+        }
+        extraTime += millis() - extraTimeStart;
+        draws++;
+    });
+
+    //Create new array
+    arr = Array(arr.length).map(e => 0);
+
+    //Fill new array
+    let index = 0;
+    counts.forEach((e,i) => {
+        for(let k=0;k<e;k++) {
+            arr[index] = i;
+            index++;
+        }
+        let extraTimeStart = millis();
+        if(draws % drawFreq == 0) {
+            let currentArr = arr.join(' ');
+            let currentComp = comparisons;
+            setTimeout(function() {
+                drawArray(currentArr, currentComp, [i]); 
+            }, drawDelay * (draws / drawFreq));
+        }
+        extraTime += millis() - extraTimeStart;
+        draws++;
+    });
+
+
+
+    timeTaken = round(millis() - startTime - extraTime);
+
+    setTimeout(function() {
+        finishedSorting = true;
+    }, drawDelay * (draws / drawFreq));
+
+    print(`Counting ${arr.length} in ${draws} draws`);
+
+}
+
+function selectionSort() {
+
+    let startTime = round(millis());
+    let extraTime = 0;
+    let draws = 0;
+
+    for(let i = 0; i < arr.length; i++) {
+        let smallestIndex = i;
+        let smallestValue = arr[i];
+        for(let j = i + 1; j < arr.length; j++) {
+            if(arr[j] < smallestValue) {
+                smallestValue = arr[j];
+                smallestIndex = j;
+            }
+            comparisons++;
+
+            let extraTimeStart = millis();
+            if(draws % drawFreq == 0) {
+                let currentArr = arr.join(' ');
+                let currentComp = comparisons;
+                setTimeout(function() {
+                    drawArray(currentArr, currentComp, [i]); 
+                }, drawDelay * (draws / drawFreq));
+            }
+            extraTime += millis() - extraTimeStart;
+            draws++;
+        }
+        swap(i, smallestIndex);
+    }
+
+
+
+    timeTaken = round(millis() - startTime - extraTime);
+
+    setTimeout(function() {
+        finishedSorting = true;
+    }, drawDelay * (draws / drawFreq));
+
+    print(`Selection ${arr.length} in ${draws} draws`);
 
 }
 
