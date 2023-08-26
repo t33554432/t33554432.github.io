@@ -13,7 +13,7 @@ function setup() {
     drawDelay = 1;
     drawFreq = 1;
 
-    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort'];
+    sortTypes = ['Bubble sort', 'Insertion sort', 'Cocktail shaker sort', "Bucket sort"];
     arrSizes = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
     drawDelays = [1, 2, 10, 50, 100, 500, 1000, 2000, 10000];
     drawFreqs = [1, 2, 5, 10, 20, 50, 100, 500, 1000, 10000, 100000];
@@ -21,7 +21,8 @@ function setup() {
     avgs = [
         [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //bubble avgs
         [25, 90,  600,  2500, 8000,  60000,  230000, 950000,  5900000,  2400000,  100000000], //insertion avgs
-        [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000] //shaker avgs
+        [45, 190, 1225, 4950, 19900, 124750, 499500, 1999000, 12497500, 49995000, 199990000], //shaker avgs
+        [10,  30,  130,  400,  1400,   7000,  25000,  100000,   620000,  2400000,  10000000] //bucket avgs
     ];
 
     finishedSorting = true;
@@ -45,6 +46,9 @@ function startSort() {
             break;
         case 'Cocktail shaker sort':
             shakerSort();
+            break;
+        case 'Bucket sort':
+            bucketSort();
             break;
     }
 
@@ -92,7 +96,7 @@ function drawArray(currentArr, currentComp, highlights) {
     text(`Array Size: ${arrSize} elements`, width / 2, 2 * width / 10);
     text(`Draw delay: ${drawDelay / 1000}s`, width / 2, 2.5 * width / 10);
     text(`Draw frequency: ${drawFreq} comparisons per frame`, width / 2, 3 * width / 10);
-    text(`This will take approximately ${floor(drawDelay * avgs[sortTypes.indexOf(sortType)][arrSizes.indexOf(arrSize)] / drawFreq) / 1000} seconds to draw`, width / 2, 3.5 * width / 10);
+    text(`This will take approximately ${floor(avgs[sortTypes.indexOf(sortType)][arrSizes.indexOf(arrSize)] / drawFreq)} frames to draw`, width / 2, 3.5 * width / 10);
     text(`Start`, width / 2, 4 * width / 10);
     for(let i=0;i<4;i++) {
         beginShape();
@@ -169,9 +173,12 @@ function bubbleSort() {
 
     while(completed < arr.length) {
 
+        let swapHappened = false;
+
         for(let i = 0; i < arr.length - completed - 1; i++) {
             if(arr[i] > arr[i+1]) {
                 swap(i, i+1);
+                swapHappened = true;
             }
             comparisons++;
             let extraTimeStart = millis();
@@ -187,6 +194,8 @@ function bubbleSort() {
         }
 
         completed++;
+
+        if(!swapHappened) completed = arr.length;
 
     }
 
@@ -246,9 +255,12 @@ function shakerSort() {
 
     while(completed < arr.length / 2) {
 
+        let swapHappened = false;
+
         for(let i = completed; i < arr.length - completed - 1; i++) {
             if(arr[i] > arr[i+1]) {
                 swap(i, i+1);
+                swapHappened = true;
             }
             comparisons++;
             let extraTimeStart = millis();
@@ -266,6 +278,7 @@ function shakerSort() {
         for(let i = arr.length - completed - 1; i > completed; i--) {
             if(arr[i] < arr[i-1]) {
                 swap(i, i-1);
+                swapHappened = true;
             }
             comparisons++;
             let extraTimeStart = millis();
@@ -282,6 +295,8 @@ function shakerSort() {
 
         completed++;
 
+        if(!swapHappened) completed = arr.length;
+
     }
 
     timeTaken = round(millis() - startTime - extraTime);
@@ -291,6 +306,89 @@ function shakerSort() {
     }, drawDelay * (draws / drawFreq))
 
     print(`Cocktail ${arr.length} in ${draws} draws`);
+
+}
+
+function bucketSort() {
+
+    let buckets = [];
+    let startTime = round(millis());
+    let extraTime = 0;
+    let draws = 0;
+
+    let n = 10;
+
+    function drawState(cArr, cHigh) {
+        let extraTimeStart = millis();
+        if(draws % drawFreq == 0) {
+            let currentArr = cArr.map(e => (e.length) ? e.join(' ') : e).join(' ');
+            let currentComp = comparisons;
+            setTimeout(function() {
+                drawArray(currentArr, currentComp, cHigh); 
+            }, drawDelay * (draws / drawFreq));
+        }
+        extraTime += millis() - extraTimeStart;
+        draws++;
+    }
+
+    //Creating N buckets
+    for(let i=0; i<n; i++) {
+        buckets[i] = [];
+    }
+
+    //Splitting array into bins
+    arr.forEach((e,i) => {
+        buckets[floor(map(e, 0, arr.length, 0, n))].push(e);
+        drawState(arr, [i]);
+        comparisons++;
+    });
+
+    //Sort each bucket
+    let bucketWidth = max(buckets.map(e => e.length));
+    for(let i=1; i<bucketWidth; i++) {
+        for(let j=0; j<buckets.length;j++) {
+            for(let k=i;k>0;k--) {
+                if(buckets[j][k]) {
+                    if(buckets[j][k] < buckets[j][k-1]) {
+                        let temp = buckets[j][k];
+                        buckets[j][k] = buckets[j][k-1];
+                        buckets[j][k-1] = temp;
+                    } else {
+                        k = 0;
+                    }
+                    comparisons++;
+                }
+                drawState(buckets, [j * bucketWidth + k, j * bucketWidth + k - 1]);
+            }
+        }
+    }
+
+    //Redo first bucket for some reason
+    for(let i=1; i<buckets[0].length; i++) {
+        for(let k=i;k>0;k--) {
+            if(buckets[0][k] < buckets[0][k-1]) {
+                let temp = buckets[0][k];
+                buckets[0][k] = buckets[0][k-1];
+                buckets[0][k-1] = temp;
+            } else {
+                k = 0;
+            }
+            comparisons++;
+            drawState(buckets, [k, k - 1]);
+        }
+    }
+
+    //Combine buckets into array
+    arr = [];
+    buckets.forEach(e => e.forEach(f => arr.push(f)));
+
+    timeTaken = round(millis() - startTime - extraTime);
+
+    setTimeout(function() {
+        finishedSorting = true;
+    }, drawDelay * (draws / drawFreq));
+
+    print(`Bucket ${arr.length} in ${draws} draws`);
 
 }
 
