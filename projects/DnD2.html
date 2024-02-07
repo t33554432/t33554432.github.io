@@ -3,12 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect 4</title>
+    <title>DnD2</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../css/templatemo-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-    <script src="connect4.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+        <script>
+            const firebaseConfig = {
+              apiKey: "AIzaSyBS1JY-fddk5CIwg3tddTM8D994WzVLuZs",
+              authDomain: "multiplayer-test-54ada.firebaseapp.com",
+              databaseURL: "https://multiplayer-test-54ada-default-rtdb.europe-west1.firebasedatabase.app",
+              projectId: "multiplayer-test-54ada",
+              storageBucket: "multiplayer-test-54ada.appspot.com",
+              messagingSenderId: "731555085929",
+              appId: "1:731555085929:web:72255f1f5c4abdf4c5ecf8"
+            };
+            firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="DnD2.js"></script>
     <link rel="shortcut icon" href="#">
 
 <!--
@@ -60,29 +80,32 @@ https://templatemo.com/tm-556-catalog-z
             <div class="tm-about-2-col">
                 <div class="row mb-4" style="margin-left: 50px;">
                     <h2 class="tm-text-primary mb-4">
-                        Connect 4
+                        DnD2
                     </h2>
                     <div id="sketch-holder" style="height:800px"></div>
                 </div>           
             </div>                
-        </div> 
-        <div class="col-md-6 col-12">
-            <div class="tm-about-2-col">
-                <h2 class="tm-text-primary mb-4">
-                    Right-side Title goes here
-                </h2>
-                <p class="mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget porta justo. Nullam placerat mi eu nulla vestibulum, viverra sollicitudin lacus scelerisque. Donec a dui non odio pretium cursus in vitae nibh. Donec condimentum, turpis et condimentum fermentum, velit purus efficitur justo, eget varius nunc mi faucibus purus. Nam lobortis lacinia risus, sed sollicitudin libero fermentum quis. Aenean et gravida metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis pellentesque lacus at justo ullamcorper, eu venenatis diam scelerisque. Quisque quis nulla ut nunc auctor mattis elementum sed justo. In ex dolor, sodales vitae scelerisque eget, laoreet in massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis posuere interdum diam sit amet ultrices.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget porta justo. Nullam placerat mi eu nulla vestibulum, viverra sollicitudin lacus scelerisque. Donec a dui non odio pretium cursus in vitae nibh. Donec condimentum, turpis et condimentum fermentum, velit purus efficitur justo, eget varius nunc mi faucibus purus. Nam lobortis lacinia risus, sed sollicitudin libero fermentum quis. Aenean et gravida metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis pellentesque lacus at justo ullamcorper, eu venenatis diam scelerisque. Quisque quis nulla ut nunc auctor mattis elementum sed justo. In ex dolor, sodales vitae scelerisque eget, laoreet in massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis posuere interdum diam sit amet ultrices.
-                </p>
-            </div>                
-        </div>     
+        </div>   
     </div>
 
     <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
-        
+        <div class="container-fluid tm-container-small">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">About Catalog-Z</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget porta justo. Nullam placerat mi eu nulla vestibulum, viverra sollicitudin lacus scelerisque. Donec a dui non odio pretium cursus in vitae nibh. Donec condimentum, turpis et condimentum fermentum, velit purus efficitur justo, eget varius nunc mi faucibus purus.
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">
+                    <h3 class="tm-text-primary mb-4 tm-footer-title">Links</h3>
+                    <ul class="tm-footer-links pl-0">
+                        <li><a href="#">A</a></li>
+                        <li><a href="#">B</a></li>
+                        <li><a href="#">C</a></li>
+                        <li><a href="#">D</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </footer>
     
     <script src="../js/plugins.js"></script>
