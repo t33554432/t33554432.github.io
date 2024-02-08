@@ -69,21 +69,27 @@ https://templatemo.com/tm-556-catalog-z
         <div class="col-md-6 col-12">
             <div class="tm-about-2-col">
                 <h2 class="tm-text-primary mb-4">
-                    Right-side Title goes here
+                    Summary
                 </h2>
                 <p class="mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget porta justo. Nullam placerat mi eu nulla vestibulum, viverra sollicitudin lacus scelerisque. Donec a dui non odio pretium cursus in vitae nibh. Donec condimentum, turpis et condimentum fermentum, velit purus efficitur justo, eget varius nunc mi faucibus purus. Nam lobortis lacinia risus, sed sollicitudin libero fermentum quis. Aenean et gravida metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis pellentesque lacus at justo ullamcorper, eu venenatis diam scelerisque. Quisque quis nulla ut nunc auctor mattis elementum sed justo. In ex dolor, sodales vitae scelerisque eget, laoreet in massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis posuere interdum diam sit amet ultrices.
+                    This connect 4 project contains the game of connect 4 created in JavaScript with the use of the library p5.
                 </p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget porta justo. Nullam placerat mi eu nulla vestibulum, viverra sollicitudin lacus scelerisque. Donec a dui non odio pretium cursus in vitae nibh. Donec condimentum, turpis et condimentum fermentum, velit purus efficitur justo, eget varius nunc mi faucibus purus. Nam lobortis lacinia risus, sed sollicitudin libero fermentum quis. Aenean et gravida metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis pellentesque lacus at justo ullamcorper, eu venenatis diam scelerisque. Quisque quis nulla ut nunc auctor mattis elementum sed justo. In ex dolor, sodales vitae scelerisque eget, laoreet in massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis posuere interdum diam sit amet ultrices.
+                    The 2 Player mode allows you to control both players with the mouse. It will end the game once a player gets 4 in a row. 
+                    There is also the ability to keep track of the scores as well as choose who goes first. By default, it will alternate the starting player.
                 </p>
+                <p> 
+                    The 1 Player mode has the same features as the 2 Player mode however it only lets you control 1 of the players. This makes use of a min-max algorithm 
+                    on the game to choose a spot for the bot. You can select how deep this algorithm will look and it will calculate what it thinks is the best move to 
+                    maximise its winning chances. This bot has to evaluate positions on the board which it does in a fairly simple way. The way it does this is by simply counting the 
+                    number of triples that it has and the number the opponent has. I did account for the triples having to be finishable (3 yellows in a row with a red on either side is 
+                    not useful) and it takes wins when it can. However, this is not the perfect evaluation function and this is a solved game so potentially 
+                    all the bot's moves could be precalculated but as a fairly simple bot that runs in real time, it does surprisingly well.
+                </p>
+
             </div>                
         </div>     
     </div>
-
-    <footer class="tm-bg-gray pt-5 pb-3 tm-text-gray tm-footer">
-        
-    </footer>
     
     <script src="../js/plugins.js"></script>
     <script>

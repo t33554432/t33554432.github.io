@@ -12,7 +12,7 @@ function setup() {
     textAlign(CENTER, CENTER);
     state = 'menu';
     gridSize = 8;
-    bombCount = 16;
+    bombCount = 10;
     resetBoard();
 
 }
@@ -102,8 +102,7 @@ function menuPressed() {
     }
 
     if(checkRect(3.25 * inc, 3.5 * inc, 0.75 * inc, 0.5 * inc)) {
-        bombCount = bombCount + 1;
-        gridSize = max(gridSize, ceil(sqrt(bombCount + 1)));
+        bombCount = min(bombCount + 1, gridSize ** 2 - 1);
     }
 
 }

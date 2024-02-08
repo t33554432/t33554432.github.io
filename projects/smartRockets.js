@@ -30,8 +30,8 @@ var canvas = createCanvas(800, 800);
   prevSuccess = 0;
   rocketsCompleted = 0;
   spawn = createVector(4 * offset, 7 * offset);
-  target = createVector(4 * offset, offset);
-  targetRadius = offset / 2;
+  target = createVector(4 * offset, 1.5 * offset);
+  targetRadius = offset;
   count = 0;
   noStroke();
   for(let i = 0; i < numOfRockets; i++) {
@@ -62,8 +62,9 @@ window.addEventListener('resize', windowResized);
 function draw() {
   background(0);
   
-  fill(255);
+  fill(255, 200, 0);
   ellipse(target.x, target.y, 2 * targetRadius);
+  fill(255);
   textSize(offset / 4);
   textAlign(CENTER, CENTER);
   text('Generation: ' + generation, offset, offset / 2);
